@@ -1,0 +1,62 @@
+
+                               KHOOK 1.0
+
+
+ABOUT:
+
+  KHook is a re-routing library. Unlike other re-routing libraries
+  KHook embeds a dissassembler-encoder: It is able to recognize x86
+  instructions and to recode (move) them to other memory areas.
+
+
+COMPILATION AND INSTALLATION:
+
+    $ gmake all
+    $ sudo gmake install
+
+  where gmake is GNU make. Two files are installed:
+
+    $PREFIX/include/khook.h
+    $PREFIX/lib/libkhook.so
+
+  If the PREFIX environment variable is not set it defaults to /usr/local.
+
+  KHook was tested under Linux, FreeBSD and OpenBSD. It should work on
+  any other x86 based unix like OS and can be easily ported to Windows.
+
+
+EXAMPLE:
+
+  The example/ directory contains a little program that hooks the printf(3)
+  function. Compile the library then the example:
+
+    $ make all; cd example; make run
+
+
+FAST API REFERENCE:
+
+  size_t khook(void *fn, void *hcode, size_t *hsiz, long arg,
+      void (*callback)(long, long, ...));
+    Hook a function fn.
+    hcode should point to a RXW memory buffer of size hsiz;
+    arg is passed as is to the user defined callback;
+    callback is a user defined function called whenever the program
+    delivers a call to fn; when this callback returns the original
+    fn is called.
+
+  int disass_fetch(INS *ins, uint8_t **addr);
+    Fetch an instruction from addr and put it into ins.
+    addr is updated with the address of the next instruction.
+
+  int disass_put(uint8_t *dst, const INS *ins);
+    Write into dst the instruction in ins.
+
+  int disass_recode(uint8_t *dst, const INS *ins, const uint8_t *addr);
+    Recode an instruction fetched from addr and write it into dst.
+
+  For a more detailed documentation check the source code.
+
+
+LICENCE:
+
+    New BSD Licence. Read the LICENCE file.

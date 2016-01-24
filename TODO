@@ -1,0 +1,4 @@
+- Detect and recode PIC prologs
+- 64 bits
+- Coprocessor instructions
+- Avoid gmake
